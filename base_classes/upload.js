@@ -92,7 +92,7 @@ class Upload {
     expect(loadedInstitution.trim()).toBe(iLoaded);
   }
 
-  async upload(file, choice) {
+  async upload(page, file, choice) {
     await this.myTriangulatorTab.click(); // Navigate to My Triangulator tab
     await expect(this.page.getByText('New Suggestions').first()).toBeVisible();
     //await this.openSlidebar.click(); // Open the slidebar
@@ -118,6 +118,7 @@ class Upload {
     await expect(this.page.getByText('Uploaded.')).toBeVisible(); // Toast message assertion
     await expect(this.page.getByText('Upload Course Catalog Summary')).toBeVisible(); // Upload summary page assertion
   }
+  
 
   async criticalError(error) {
     await expect(this.page.getByText('Errors', {exact: true})).toBeVisible({timeout:120000});

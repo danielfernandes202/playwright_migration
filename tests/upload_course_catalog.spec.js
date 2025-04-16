@@ -18,40 +18,33 @@ let Creds, criticalError, preUploadCount, postUploadCount;
 test.beforeEach(async ({ browser }) => {
   const context = await browser.newContext();
   const page = await context.newPage();
-  uploadInstance = new Upload(page);
   loginPageInstance = new loginPage(page);
+  uploadInstance = new Upload(page);
   await page.goto("https://qa.creditmobility.net/");
-
-});
-
-test.describe("Upload Catalog Add, Update and Replace", () => {
-  let loginPageInstance, uploadInstance;
-
-  test.beforeEach(async ({ page }) => {
-    loginPageInstance = new LoginPage(page);
-    uploadInstance = new Upload(page);
-    
-    // Load fixtures (similar to cy.fixture)
-    const credsJson = require('../../fixtures/loginCreds.json');
-    const criticalErrorJson = require('../../fixtures/criticalErrorName.json');
-    const filesDataJson = require('../../fixtures/criticalErrorsFiles.json');
+  const credsJson = require('../test_data/logindata.json');
+    // const criticalErrorJson = require('../../fixtures/criticalErrorName.json');
+    // const filesDataJson = require('../../fixtures/criticalErrorsFiles.json');
     
     Creds = credsJson;
-    criticalError = criticalErrorJson;
-    uploadFiles = filesDataJson;
+    // criticalError = criticalErrorJson;
+    // uploadFiles = filesDataJson;
     
     // Visit page and login
     await loginPageInstance.visit();
-    await loginPageInstance.loginRoles(Creds.InstAdminNevada, Creds.Password2, 'Institution Admin');
-  });
+    await loginPageInstance.loginRoles(page, Creds.nevadaadmin, Creds.password, 'Institution Admin');
+});
 
-  test.skip("Upload Catalog file with incorrect format(non CSV file)", async () => {
-    await uploadInstance.uploadcatalog('cypress/fixtures/uplaoadFiles/182290_NonCSVFile.xlsx', 1);
+test.describe("Upload Catalog Add, Update and Replace", () => {
+   //let loginPageInstance, uploadInstance;
+
+  test("TC_01: Upload Catalog file with incorrect format(non CSV file)", async ({page}) => {
+    
+    await uploadInstance.uploadcatalog(page, 'cypress/fixtures/uplaoadFiles/182290_NonCSVFile.xlsx', 1);
     await expect(page.locator("text=Unsupported file. Only csv files are supported.")).toBeVisible();
   });
 
   test.skip("Upload Catalog file with spaces in the file name", async () => {
-    await uploadInstance.uploadcatalog('cypress/fixtures/uplaoadFiles/182290_This File has Spaces.CSV', 1);
+    //await uploadInstance.uploadcatalog('cypress/fixtures/uplaoadFiles/182290_This File has Spaces.CSV', 1);
     await expect(page.locator("text=Please rename the file without spaces and try again.")).toBeVisible();
   });
 
