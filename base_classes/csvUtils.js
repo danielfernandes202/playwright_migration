@@ -39,25 +39,27 @@ class UploadUtils {
         // Update the modified content back to the file (if needed)
         return rows.join('\n');
     }
+
     static updateCSVContentCatalog(fileContent) {
         const rows = fileContent.split('\n');
 
         // Process each row starting from the second row
-        for (let i = 1; i < Math.min(rows.length, 22); i ++) {
+        for (let i = 1; i < Math.min(rows.length, 22); i++) {
             const CourseIdentifier = `AUTO${UploadUtils.generateUniqueAlphaNumeric(9)}`;
-           // const targetRuleIdentifier = `${ruleIdentifier}`;
 
-            // Check if the row has enough columns
-            if (rows[i]) {
+            // Check if the row exists and is not empty
+            if (rows[i] && rows[i].trim() !== '') {
                 // Update values in column A (RulesIdentifier) for source and target rows
-                //rows[i] = `${CourseIdentifier},${rows[i].split(',').slice(0,2).join(',')}`;
                 rows[i] = `${rows[i].split(',').slice(0, 1).join(',')},${CourseIdentifier},${rows[i].split(',').slice(2).join(',')}`;
-                //rows[i + 1] = `${targetRuleIdentifier},${rows[i + 1].split(',').slice(1).join(',')}`;
 
-                // // Update values in column J (Number) with unique alphanumeric value
-                // const uniqueAlphaNumericValue = UploadUtils.generateUniqueAlphaNumeric(8);
-                // rows[i] = `${rows[i].split(',').slice(0, 9).join(',')},${uniqueAlphaNumericValue},${rows[i].split(',').slice(10).join(',')}`;
-                // rows[i + 1] = `${rows[i + 1].split(',').slice(0, 9).join(',')},${uniqueAlphaNumericValue},${rows[i + 1].split(',').slice(10).join(',')}`;
+                // Update values in column J (Number) with unique alphanumeric value
+                const uniqueAlphaNumericValue = UploadUtils.generateUniqueAlphaNumeric(8);
+                rows[i] = `${rows[i].split(',').slice(0, 3).join(',')},${uniqueAlphaNumericValue},${rows[i].split(',').slice(4).join(',')}`;
+
+                // Ensure the next row exists before processing it
+                if (rows[i + 1] && rows[i + 1].trim() !== '') {
+                    rows[i + 1] = `${rows[i + 1].split(',').slice(0, 3).join(',')},${uniqueAlphaNumericValue},${rows[i + 1].split(',').slice(4).join(',')}`;
+                }
             }
         }
 
