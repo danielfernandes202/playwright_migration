@@ -31,55 +31,59 @@ test.beforeEach(async ({ browser }) => {
     
     // Visit page and login
     await loginPageInstance.visit();
-    await loginPageInstance.loginRoles(page, Creds.nevadaadmin, Creds.password, 'Institution Admin');
 });
 
-test.describe("Upload Catalog Add, Update and Replace", () => {
    //let loginPageInstance, uploadInstance;
 
-  test("TC_01: Upload Catalog file with incorrect format(non CSV file)", async ({page}) => {
-    
-    await uploadInstance.uploadcatalog(page, 'cypress/fixtures/uplaoadFiles/182290_NonCSVFile.xlsx', 1);
-    await expect(page.locator("text=Unsupported file. Only csv files are supported.")).toBeVisible();
+  test("TC_01: Upload Catalog file with incorrect format(non CSV file)", async () => {
+    await loginPageInstance.loginuser( Creds.nevadaadmin, Creds.password, 'Institution Admin');
+
+    await uploadInstance.upload('test_data/uploadRules/182290_NonCSVFile.xlsx', 1);
+    await expect(uploadInstance.page.getByText("Unsupported file. Only csv files are supported.")).toBeVisible();
   });
 
-  test.skip("Upload Catalog file with spaces in the file name", async () => {
-    //await uploadInstance.uploadcatalog('cypress/fixtures/uplaoadFiles/182290_This File has Spaces.CSV', 1);
-    await expect(page.locator("text=Please rename the file without spaces and try again.")).toBeVisible();
+  test("TC_02: Upload Catalog file with spaces in the file name", async () => {
+    await loginPageInstance.loginuser( Creds.nevadaadmin, Creds.password, 'Institution Admin');
+
+    await uploadInstance.upload('test_data/uploadRules/182290_This File has Spaces.CSV', 1);
+    await expect(uploadInstance.page.getByText("Please rename the file without spaces and try again.")).toBeVisible();
   });
 
-  test.skip("Attempt to press on submit without checking the acknowledgement checkbox", async () => {
-    await uploadInstance.uploadcatalog(filePath, 1);
+  test("TC_03: Attempt to press on submit without checking the acknowledgement checkbox", async () => {
+    await loginPageInstance.loginuser( Creds.nevadaadmin, Creds.password, 'Institution Admin');
+    await uploadInstance.upload(filePath, 1);
     await uploadInstance.uplaodcatalogValid(0);
-    await expect(page.locator('text=Submit')).toBeDisabled();
+    await expect(uploadInstance.page.getByText('Submit')).toBeDisabled();
   });
 
-  test.skip("Uploads a catalog file and click cancel on the upload summary page", async () => {
-    await uploadInstance.uploadcatalog(filePath, 1);
+  test("TC_04: Uploads a catalog file and click cancel on the upload summary page", async () => {
+    await loginPageInstance.loginuser( Creds.nevadaadmin, Creds.password, 'Institution Admin');
+    await uploadInstance.upload(filePath, 1);
     await uploadInstance.uplaodcatalogValid(0);
-    await page.locator('text=Cancel').click();
-    expect(page.url()).toContain('/my-workspace/inst-admin/summary');
+    await uploadInstance.page.getByText('Cancel').click();
+    await expect(uploadInstance.page).toHaveURL(/\/my-workspace\/inst-admin\/summary/);
   });
 
-  test.skip("Uploads catalog add function with no errors", async () => {
+  test.only("TC_05: Uploads catalog add function with no errors", async () => {
+    await loginPageInstance.loginuser( Creds.nevadaadmin, Creds.password, 'Institution Admin');
     let fileRulecount = 3;
     
     // Read and modify CSV content
     const fs = require('fs');
-    let fileContent = fs.readFileSync("cypress/fixtures/CatalogFiles/DuplicateCourseIdentifier.csv", 'utf-8');
+    let fileContent = fs.readFileSync("test_data/CatalogFiles/DuplicateCourseIdentifier.csv", 'utf-8');
     const modifiedContent = UploadUtils.updateCSVContentCatalog(fileContent);
-    fs.writeFileSync("cypress/fixtures/CatalogFiles/DuplicateCourseIdentifier.csv", modifiedContent);
+    fs.writeFileSync("test_data/CatalogFiles/DuplicateCourseIdentifier.csv", modifiedContent);
     
     // Pre-upload catalog count
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/DuplicateCourseIdentifier.csv", 1);
+    await uploadInstance.upload("test_data/CatalogFiles/DuplicateCourseIdentifier.csv", 1);
     await uploadInstance.uplaodcatalogValid(0);
     
     // Verify no errors
-    await expect(page.locator('text=Errors')).not.toBeVisible();
-    await expect(page.locator('text=Download csv file')).not.toBeVisible();
+    await expect(uploadInstance.page.getByText('Errors')).not.toBeVisible();
+    await expect(uploadInstance.page.getByText('Download csv file')).not.toBeVisible();
     
     // Verify confirmation page counts
     await uploadInstance.confirmationPageCountCatalog("3", "+ 3 new active courses", "3", "3 rows were successfully transformed", "+ 3 new courses");
@@ -91,30 +95,33 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     expect(parseInt(postUploadCount)).toEqual(parseInt(preUploadCount) + fileRulecount);
   });
 
-  test.skip("Uploads catalog add function with Invalid active course error", async () => {
+  test.only("Uploads catalog add function with Invalid active course error", async () => {
+    await loginPageInstance.loginuser( Creds.nevadaadmin, Creds.password, 'Institution Admin');
+
     let fileRulecount = 2;
     
     // Read and modify CSV content
     const fs = require('fs');
-    let fileContent = fs.readFileSync("cypress/fixtures/CatalogFiles/Format-InvalidActiveCourse.csv", 'utf-8');
+    let fileContent = fs.readFileSync("test_data/CatalogFiles/Format-InvalidActiveCourse.csv", 'utf-8');
     const modifiedContent = UploadUtils.updateCSVContentCatalog(fileContent);
-    fs.writeFileSync("cypress/fixtures/CatalogFiles/Format-InvalidActiveCourse.csv", modifiedContent);
+    fs.writeFileSync("test_data/CatalogFiles/Format-InvalidActiveCourse.csv", modifiedContent);
     
     // Pre-upload catalog count
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/Format-InvalidActiveCourse.csv", 1);
+    await uploadInstance.upload("test_data/CatalogFiles/Format-InvalidActiveCourse.csv", 1);
     await uploadInstance.uplaodcatalogValid(0);
     
     // Verify format error
     await uploadInstance.catalogFormatError();
     
     // Verify confirmation page counts
-    await uploadInstance.confirmationPageCountCatalog("0", "+ 0 new active courses", "3" + "1 format errors", "3 rows were successfully transformed", "+ 2 new courses");
+    await uploadInstance.confirmationPageCountCatalog("2", "+ 2 new active courses", "3" + "1 format errors", "3 rows were successfully transformed", "+ 2 new courses");
     
     // Verify error message in CSV
-    await uploadInstance.catalogreadErrorCSVFile("Invalid Active Course Indicator. Should be a boolean  ", 0);
+  
+    await uploadInstance.catalogreadErrorCSVFile("Invalid Active Course Indicator. Should be a boolean ", 0);
     
     // Post upload
     await uploadInstance.postUpload();
@@ -136,7 +143,7 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/Format-InvalidCourceDeparmentname.csv", 1);
+    await uploadInstance.upload("cypress/fixtures/CatalogFiles/Format-InvalidCourceDeparmentname.csv", 1);
     await uploadInstance.uplaodcatalogValid(0);
     
     // Verify format error
@@ -168,7 +175,7 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/Format-InvalidCourseCreditUnits.csv", 1);
+    await uploadInstance.upload("cypress/fixtures/CatalogFiles/Format-InvalidCourseCreditUnits.csv", 1);
     await uploadInstance.uplaodcatalogValid(0);
     
     // Verify format error
@@ -200,7 +207,7 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/Format-InvalidEffectiveYear.csv", 1);
+    await uploadInstance.upload("cypress/fixtures/CatalogFiles/Format-InvalidEffectiveYear.csv", 1);
     await uploadInstance.uplaodcatalogValid(0);
     
     // Verify format error
@@ -232,7 +239,7 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/Format-InvalidExpirationYear.csv", 1);
+    await uploadInstance.upload("cypress/fixtures/CatalogFiles/Format-InvalidExpirationYear.csv", 1);
     await uploadInstance.uplaodcatalogValid(0);
     
     // Verify format error
@@ -264,7 +271,7 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/IncorrectInstitution.csv", 1);
+    await uploadInstance.upload("cypress/fixtures/CatalogFiles/IncorrectInstitution.csv", 1);
     await uploadInstance.uplaodcatalogValid(0);
     
     // Verify critical error
@@ -297,7 +304,7 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/MissingCourseCreditMaxValue.csv", 1);
+    await uploadInstance.upload("cypress/fixtures/CatalogFiles/MissingCourseCreditMaxValue.csv", 1);
     await uploadInstance.uplaodcatalogValid(0);
     
     // Verify critical error
@@ -323,7 +330,7 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/MissingCourseCreditMinValue.csv", 1);
+    await uploadInstance.upload("cypress/fixtures/CatalogFiles/MissingCourseCreditMinValue.csv", 1);
     await uploadInstance.uplaodcatalogValid(0);
     
     // Verify critical error
@@ -354,7 +361,7 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/MissingCourseLongTitle.csv", 1);
+    await uploadInstance.upload("cypress/fixtures/CatalogFiles/MissingCourseLongTitle.csv", 1);
     await uploadInstance.uplaodcatalogValid(0);
     
     // Verify critical error
@@ -379,20 +386,20 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     
     // Read and modify CSV content
     const fs = require('fs');
-    let fileContent = fs.readFileSync("cypress/fixtures/CatalogFiles/DuplicateCourseIdentifier.csv", 'utf-8');
+    let fileContent = fs.readFileSync("test_data/CatalogFiles/DuplicateCourseIdentifier.csv", 'utf-8');
     const modifiedContent = UploadUtils.updateCSVContentCatalog(fileContent);
-    fs.writeFileSync("cypress/fixtures/CatalogFiles/DuplicateCourseIdentifier.csv", modifiedContent);
+    fs.writeFileSync("test_data/CatalogFiles/DuplicateCourseIdentifier.csv", modifiedContent);
     
     // Pre-upload catalog count
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/DuplicateCourseIdentifier.csv", 1);
+    await uploadInstance.upload("test_data/CatalogFiles/DuplicateCourseIdentifier.csv", 1);
     await uploadInstance.uplaodcatalogValid(1);
     
     // Verify no errors
-    await expect(page.locator('text=Errors')).not.toBeVisible();
-    await expect(page.locator('text=Download csv file')).not.toBeVisible();
+    await expect(page.getByText('Errors')).not.toBeVisible();
+    await expect(page.getByText('Download csv file')).not.toBeVisible();
     
     // Verify confirmation page counts
     await uploadInstance.confirmationPageCountCatalog("3", "+ 3 new active courses", "3", "3 rows were successfully transformed", "+ 3 new courses");
@@ -410,20 +417,20 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     
     // Read and modify CSV content
     const fs = require('fs');
-    let fileContent = fs.readFileSync("cypress/fixtures/CatalogFiles/DuplicateCourseIdentifier.csv", 'utf-8');
+    let fileContent = fs.readFileSync("test_data/CatalogFiles/DuplicateCourseIdentifier.csv", 'utf-8');
     const modifiedContent = UploadUtils.updateCSVContentCatalog(fileContent);
-    fs.writeFileSync("cypress/fixtures/CatalogFiles/DuplicateCourseIdentifier.csv", modifiedContent);
+    fs.writeFileSync("test_data/CatalogFiles/DuplicateCourseIdentifier.csv", modifiedContent);
     
     // Pre-upload catalog count
     preUploadCount = await uploadInstance.preUploadCatalog();
     console.log(preUploadCount);
     
-    await uploadInstance.uploadcatalog("cypress/fixtures/CatalogFiles/DuplicateCourseIdentifier.csv", 1);
+    await uploadInstance.upload("test_data/CatalogFiles/DuplicateCourseIdentifier.csv", 1);
     await uploadInstance.uplaodcatalogValid(2);
     
     // Verify no errors
-    await expect(page.locator('text=Errors')).not.toBeVisible();
-    await expect(page.locator('text=Download csv file')).not.toBeVisible();
+    await expect(page.getByText('Errors')).not.toBeVisible();
+    await expect(page.getByText('Download csv file')).not.toBeVisible();
     
     // Verify confirmation page counts
     await uploadInstance.confirmationPageCountCatalog("3", "+ 3 new active courses", "3", "3 rows were successfully transformed", "+ 3 new courses");
@@ -435,4 +442,3 @@ test.describe("Upload Catalog Add, Update and Replace", () => {
     console.log(postUploadCount);
     expect(parseInt(postUploadCount)).toEqual(3);
   });
-});

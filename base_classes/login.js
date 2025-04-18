@@ -9,6 +9,8 @@ class loginPage {
         this.myWorkplaceTab = page.getByRole('link', { name: 'My Workplace' });
         this.settingsTab = page.getByRole('link', { name: 'Settings' });
         this.codingSchema = page.locator(".value-wrapper").nth(2);
+        this.roleIndicator = page.locator('.role-indicator');
+
 
 
     }
@@ -18,13 +20,16 @@ class loginPage {
         await expect(this.page).toHaveURL(/.*\/email/);
     }
 
-    async loginuser(user, password) {
+    async loginuser(user, password, role) {
         await this.landingLoginButton.click();
         await this.emailTextBox.fill(user);
         //await this.page.keyboard.press("Tab");
         await this.passwordTextBox.fill(password);
         await this.submitButton.click();
         await this.page.waitForURL("**/app/dashboard");
+        // await expect(this.roleIndicator).toBeVisible();
+        // await expect(this.roleIndicator).toHaveText(role);
+
     }
     async navigateToSettings(schema) {
         await this.page.setDefaultTimeout(120000);
@@ -34,13 +39,13 @@ class loginPage {
         await expect(this.codingSchema).toContainText(schema);
 
     }
-    async loginRoles(page, email, password, role) {
-        this.emailTextBox.fill(email);
-        await page.waitForTimeout(2000)
-        this.passwordTextBox.fill(password);
-        this.submitButton.click();
-        // cy.url().should('include', '/app/dashboard');
-        // this.elements.roleIndicator.should('contain', role)
-    }
-}
+//     async loginRoles(page, email, password, role) {
+//         this.emailTextBox.fill(email);
+//         await page.waitForTimeout(2000)
+//         this.passwordTextBox.fill(password);
+//         this.submitButton.click();
+//         // cy.url().should('include', '/app/dashboard');
+//         // this.elements.roleIndicator.should('contain', role)
+//     }
+ }
 module.exports = { loginPage }

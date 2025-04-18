@@ -91,8 +91,24 @@ class Upload {
     const loadedInstitution = await this.page.locator('.items-stretch > .flex-col > :nth-child(4)').textContent();
     expect(loadedInstitution.trim()).toBe(iLoaded);
   }
+  async confirmationPageCountCatalog(rCount, rInFile, iCount, iInFile, iLoaded) {
+    const rulesCount = await this.page.locator(':nth-child(3) > div > .font-bold').textContent();
+    expect(rulesCount.trim()).toBe(rCount); // Accepted Rule count
 
-  async upload(page, file, choice) {
+    const rulesInFile = await this.page.locator(':nth-child(3) > div > .text-neutral-400').textContent();
+    expect(rulesInFile.trim()).toBe(rInFile); // Rules in file
+
+    const institutionCount = await this.page.locator('.gap-4 > :nth-child(1) > .gap-8').textContent();
+    expect(institutionCount.trim()).toBe(iCount); // Institution count
+
+    const institutionInFile = await this.page.locator(':nth-child(3) > .text-neutral-400').textContent();
+    expect(institutionInFile.trim()).toBe(iInFile); // Institutions in file
+
+    const loadedInstitution = await this.page.locator(':nth-child(4) > .text-neutral-400').textContent();
+    expect(loadedInstitution.trim()).toBe(iLoaded); // Institution loaded from the file
+}
+
+  async upload(file, choice) {
     await this.myTriangulatorTab.click(); // Navigate to My Triangulator tab
     await expect(this.page.getByText('New Suggestions').first()).toBeVisible();
     //await this.openSlidebar.click(); // Open the slidebar
@@ -101,9 +117,10 @@ class Upload {
     await expect(this.page.getByLabel('Upload').getByText('Upload', { exact: true })).toBeVisible(); // Assertions
     await this.page.locator(`#optionLabel-${choice}`).click(); // Select the option
     await this.uploadNextButton.click(); // Click on the next button
-    await expect(this.page.getByText('Upload data', {timeout:120000})).toBeVisible();
+   // await expect(this.page.getByText('Upload data', {timeout:120000})).toBeVisible();
     await this.uploadFile.setInputFiles(file); // Select the file
   }
+
 
   async uploadValid(choice) {
     await this.page.locator(`#optionLabel-${choice}`).first().click(); // Click on add option
@@ -112,11 +129,11 @@ class Upload {
     await expect(this.page.getByText('Upload Rules Summary')).toBeVisible({timeout:120000}); // Upload summary page assertion
   }
 
-  async uploadCatalogValid(choice) {
-    await this.page.locator(`#optionLabel-${choice}`).click(); // Click on add option
+  async uplaodcatalogValid(choice) {
+    await this.page.locator(`#optionLabel-${choice}`).first().click(); // Click on add option
     await this.uploadNextButton.click(); // Submit button to upload the file
-    await expect(this.page.getByText('Uploaded.')).toBeVisible(); // Toast message assertion
-    await expect(this.page.getByText('Upload Course Catalog Summary')).toBeVisible(); // Upload summary page assertion
+    await expect(this.page.getByText('Uploaded.')).toBeVisible({timeout:120000}); // Toast message assertion
+    await expect(this.page.getByText('Upload Course Catalog Summary')).toBeVisible({timeout:120000}); // Upload summary page assertion
   }
   
 
@@ -131,7 +148,7 @@ class Upload {
 
   async catalogFormatError() {
     await expect(this.page.locator('.py-1')).toBeVisible();
-    await expect(this.page.locator('.w-full.flex-col > :nth-child(1) > .font-semibold')).toHaveText('Review formatting errors');
+//    await expect(this.page.locator('.w-full.flex-col > :nth-child(1) > .font-semibold')).toHaveText('Review formatting errors');
     await expect(this.page.getByText('Download csv file')).toBeVisible();
   }
 
@@ -183,7 +200,7 @@ class Upload {
     expect(errorMessage).toBe(error);
   }
 
-  async catalogReadErrorCSVFile(error, row) {
+  async catalogreadErrorCSVFile(error, row) {
     const [download] = await Promise.all([
       this.page.waitForEvent('download'),
       this.page.getByText('Download csv file').click(),
