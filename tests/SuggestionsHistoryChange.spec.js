@@ -20,7 +20,7 @@ test.describe('Suggestion Page', () => {
 
     });
 
-    test.only('Verifies that the user can navigate to Suggestion History tab', async ({ page }) => {
+    test('Verifies that the user can navigate to Suggestion History tab', async ({ page }) => {
 
         await loginPageObj.loginuser('testtriangulator+109@gmail.com', 'Triangulator!1', 'Institution Admin');
         await suggestion.navigateToNewSuggestionPage();
