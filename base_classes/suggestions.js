@@ -64,7 +64,7 @@ class SuggestionsPage{
       //await this.page.locator('.px-4 > .relative > .opacity-0').click();
       await expect(this.page.locator('ul > :nth-child(2) > .w-full > .flex-1')).toHaveText(' History ');
       await this.page.locator('ul > :nth-child(2) > .w-full > .flex-1').click();
-      await expect(this.page.locator('.flex > .font-semibold')).toHaveText('History');
+      await expect(this.page.locator('.flex > .font-semibold').nth(0)).toHaveText('History');
     }
   
     async newSuggestionSorting(sort) {
@@ -592,4 +592,4 @@ class SuggestionsPage{
     // await expect(this.page.locator(':nth-child(1) > .row-border-bottom > .row > .w-full > div > .rounded-full')).toBeEnabled();
   }
 }
-module.exports  = {SuggestionsPage}
+module.exports  = {SuggestionsPage};
