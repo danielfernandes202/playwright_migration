@@ -6,7 +6,7 @@ import { SuggestionsPage } from '../base_classes/suggestions.js';
 let loginPageObj, suggestion; //const combobox = new BoostRequest();
 let boost;
 
-test.describe('Suggestion Page', () => {
+
     test.beforeEach(async ({ browser }) => {
         const context = await browser.newContext();
         const page = await context.newPage();
@@ -51,4 +51,3 @@ test.describe('Suggestion Page', () => {
     // test.afterEach(async ({browser}) => {
     //     await browser.close(); // Closes the page after each test
     //   });
-});

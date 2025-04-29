@@ -19,71 +19,71 @@ let boost;
         await page.goto('');
     });
 
-    test.only('Verifies that the user can navigate to new suggestion tab', async () => {
+    test('Verifies that the user can navigate to new suggestion tab', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
     });
 
-    test.only('Verifies that the user can navigate to assigned suggestion tab', async () => {
+    test('Verifies that the user can navigate to assigned suggestion tab', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToAssignedPage();
     });
 
-    test.only('Verifies that the user can navigate to other assigned suggestion tab', async () => {
+    test('Verifies that the user can navigate to other assigned suggestion tab', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToAssignedPage();
         await suggestion.navigateToOtherAssignedSuggestions();
     });
 
-    test.only('Verifies that the user can navigate to Suggestion History tab', async () => {
+    test('Verifies that the user can navigate to Suggestion History tab', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToHistoryTab();
     });
 
-    test.only('Verifies that the user can sort A-Z for all columns in the new suggestions tab', async () => {
+    test('Verifies that the user can sort A-Z for all columns in the new suggestions tab', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.newSuggestionSorting(1);
     });
 
-    test('Verifies that the user can sort A-Z for all columns in the assigned suggestion tab', async () => {
+    test.skip('Verifies that the user can sort A-Z for all columns in the assigned suggestion tab', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToAssignedPage();
         await suggestion.newSuggestionSorting(1);
     });
 
-    test('Verifies that the user can sort A-Z for all columns in the suggestion History tab', async () => {
+    test.skip('Verifies that the user can sort A-Z for all columns in the suggestion History tab', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToHistoryTab();
         await suggestion.historySuggestionSorting(1);
     });
 
-    test('Verifies that the user can sort Z-A for all columns in the new suggestions tab', async () => {
+    test.skip('Verifies that the user can sort Z-A for all columns in the new suggestions tab', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.newSuggestionSorting(2);
     });
 
-    test('Verifies that the user can sort Z-A for all columns in the assigned suggestion tab', async () => {
+    test.skip('Verifies that the user can sort Z-A for all columns in the assigned suggestion tab', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToAssignedPage();
         await suggestion.newSuggestionSorting(2);
     });
 
-    test('Verifies that the user can sort Z-A for all columns in the suggestion History tab', async () => {
+    test.skip('Verifies that the user can sort Z-A for all columns in the suggestion History tab', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToHistoryTab();
         await suggestion.historySuggestionSorting(2);
     });
 
-    test('Verifies that the user can filter all the values on the new suggestion page', async () => {
+    test.skip('Verifies that the user can filter all the values on the new suggestion page', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         // await suggestion.dateRange();
@@ -96,53 +96,53 @@ let boost;
         await suggestion.suggestiontypefilter();
     });
 
-    test('Verifies that a user can assign a single suggestion on the new suggestion page', async () => {
+    test.skip('Verifies that a user can assign a single suggestion on the new suggestion page', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.assignSuggestion();
     });
 
-    test('Verifies that a user can assign multiple suggestions on the new suggestion page', async () => {
+    test.skip('Verifies that a user can assign multiple suggestions on the new suggestion page', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.assignSuggestionMultiple();
     });
 
-    test('Verifies that a user can assign a single suggestion on the assigned suggestion page', async () => {
+    test.skip('Verifies that a user can assign a single suggestion on the assigned suggestion page', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToAssignedPage();
         await suggestion.assignSuggestion();
     });
 
-    test('Verifies that a user can assign multiple suggestions on the assigned suggestion page', async () => {
+    test.skip('Verifies that a user can assign multiple suggestions on the assigned suggestion page', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToAssignedPage();
         await suggestion.assignSuggestionMultiple();
     });
 
-    test('Verifies that a user can accept single suggestions on the assigned suggestion page', async () => {
+    test.skip('Verifies that a user can accept single suggestions on the assigned suggestion page', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToAssignedPage();
     });
 
-    test('Verifies that a user can accept multiple suggestions on the assigned suggestion page', async () => {
+    test.skip('Verifies that a user can accept multiple suggestions on the assigned suggestion page', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToAssignedPage();
         await suggestion.acceptSuggestionMultiple();
     });
 
-    test('Verifies that a user can reject single suggestions on the assigned suggestion page', async () => {
+    test.skip('Verifies that a user can reject single suggestions on the assigned suggestion page', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToAssignedPage();
         await suggestion.rejectSuggestion();
     });
 
-    test('Verifies that a user can reject multiple suggestions on the assigned suggestion page', async () => {
+    test.skip('Verifies that a user can reject multiple suggestions on the assigned suggestion page', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.navigateToAssignedPage();

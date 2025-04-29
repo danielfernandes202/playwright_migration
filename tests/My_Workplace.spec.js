@@ -3,7 +3,7 @@ import { loginPage } from '../base_classes/login.js';
 import { Filters } from '../base_classes/filters.js';
 
 
-test.describe('MyWorkplace Filters', () => {
+
   let loginPageObj;
   let filtersObj;
 
@@ -52,4 +52,4 @@ test.describe('MyWorkplace Filters', () => {
     await filtersObj.navigatetodistrict();
     await filtersObj.ipedsFilters();
   });
-});
+

@@ -11,18 +11,18 @@ const searchdata = require('../test_data/searchResources.json');
          // Replace cy.fixture with direct JSON import
     });
 
-    test.only('Search Course by course - Attempt to add search without adding course.', async () => {
+    test('Search Course by course - Attempt to add search without adding course.', async () => {
         await searchInstance.searchCourseByCourse();
         await searchInstance.searchCourseByCourseInvalidSearch();
     });
 
-    test.only('Search Course by course - Attempt to add a course with all empty fields.', async () => {
+    test('Search Course by course - Attempt to add a course with all empty fields.', async () => {
         await searchInstance.searchCourseByCourse();
         await searchInstance.assertWithEmptyFields();
         await expect(searchInstance.page.getByText('School is missing')).toBeVisible();
     });
 
-    test.only('Search Course by course - Attempt to add a course with only institution name', async () => {
+    test('Search Course by course - Attempt to add a course with only institution name', async () => {
         test.setTimeout(120000);
         await searchInstance.searchCourseByCourse();
         await searchInstance.page.getByText('My courses').click();
@@ -31,7 +31,7 @@ const searchdata = require('../test_data/searchResources.json');
         await expect(searchInstance.page.getByText('Course subject prefix is missing')).toBeVisible();
     });
 
-    test.only('Search Course by course - Attempt to add a course without course number', async () => {
+    test('Search Course by course - Attempt to add a course without course number', async () => {
         await searchInstance.searchCourseByCourse();
         await searchInstance.addInstitutionName( searchdata.Institution[0].institutionName, searchdata.Institution[0].ipedState);
         await searchInstance.addCourseSubject( searchdata.Courses[0].courseSubject);
@@ -39,7 +39,7 @@ const searchdata = require('../test_data/searchResources.json');
         await expect(searchInstance.page.getByText('Course number is missing')).toBeVisible();
     });
 
-    test.only('Search Course by course - Add duplicate course', async () => {
+    test('Search Course by course - Add duplicate course', async () => {
         await searchInstance.searchCourseByCourse();
         await searchInstance.addInstitutionName(searchdata.Institution[0].institutionName, searchdata.Institution[0].ipedState);
         for (let i = 0; i < 2; i++) {
@@ -50,7 +50,7 @@ const searchdata = require('../test_data/searchResources.json');
         await expect(searchInstance.page.getByText('A duplicate course was added. This will not affect the number of evaluations found.')).toBeVisible();
     });
 
-    test.only('Search Course by course - Remove a previously added course', async () => {
+    test('Search Course by course - Remove a previously added course', async () => {
         test.setTimeout(60000);
         await searchInstance.searchCourseByCourse();
         for (let i = 0; i < 2; i++) {
@@ -66,7 +66,7 @@ const searchdata = require('../test_data/searchResources.json');
         await expect(searchInstance.page.locator(`text=${searchdata.Courses[0].courseSubject} ${searchdata.Courses[0].courseNumber}`)).not.toBeVisible();
     });
 
-    test.only('Search Course by course - Add multiple courses and view the search result', async () => {
+    test('Search Course by course - Add multiple courses and view the search result', async () => {
         test.setTimeout(60000)
         await searchInstance.searchCourseByCourse();
         for (let i = 0; i < 3; i++) {
@@ -80,7 +80,7 @@ const searchdata = require('../test_data/searchResources.json');
         await searchInstance.clickSearchButton();
     });
 
-    test.only('Search Course by Course - single course with no filters.', async () => {
+    test('Search Course by Course - single course with no filters.', async () => {
         await searchInstance.searchCourseByCourse();
         await searchInstance.searchCourseByCourseValid(searchdata.Institution[0].institutionName, searchdata.Courses[0].courseSubject, searchdata.Courses[0].courseNumber, searchdata.Institution[0].ipedState);
         await expect(searchInstance.page.locator(`text=${searchdata.Institution[0].institutionName}`)).toBeVisible();

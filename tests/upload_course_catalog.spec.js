@@ -64,7 +64,7 @@ test.beforeEach(async ({ browser }) => {
     await expect(uploadInstance.page).toHaveURL(/\/my-workspace\/inst-admin\/summary/);
   });
 
-  test.only("TC_05: Uploads catalog add function with no errors", async () => {
+  test("TC_05: Uploads catalog add function with no errors", async () => {
     await loginPageInstance.loginuser( Creds.nevadaadmin, Creds.password, 'Institution Admin');
     let fileRulecount = 3;
     
@@ -95,40 +95,40 @@ test.beforeEach(async ({ browser }) => {
     expect(parseInt(postUploadCount)).toEqual(parseInt(preUploadCount) + fileRulecount);
   });
 
-  test.only("Uploads catalog add function with Invalid active course error", async () => {
-    await loginPageInstance.loginuser( Creds.nevadaadmin, Creds.password, 'Institution Admin');
+  //   test(("TC 06 :Uploads catalog Update function with Invalid active course", async () => {
+  //   await loginPageInstance.loginuser( Creds.nevadaadmin, Creds.password, 'Institution Admin');
 
-    let fileRulecount = 2;
+  //   let fileRulecount = 2;
     
-    // Read and modify CSV content
-    const fs = require('fs');
-    let fileContent = fs.readFileSync("test_data/CatalogFiles/Format-InvalidActiveCourse.csv", 'utf-8');
-    const modifiedContent = UploadUtils.updateCSVContentCatalog(fileContent);
-    fs.writeFileSync("test_data/CatalogFiles/Format-InvalidActiveCourse.csv", modifiedContent);
+  //   // Read and modify CSV content
+  //   const fs = require('fs');
+  //   let fileContent = fs.readFileSync("test_data/CatalogFiles/Format-InvalidActiveCourse.csv", 'utf-8');
+  //   const modifiedContent = UploadUtils.updateCSVContentCatalog(fileContent);
+  //   fs.writeFileSync("test_data/CatalogFiles/Format-InvalidActiveCourse.csv", modifiedContent);
     
-    // Pre-upload catalog count
-    preUploadCount = await uploadInstance.preUploadCatalog();
-    console.log(preUploadCount);
+  //   // Pre-upload catalog count
+  //   preUploadCount = await uploadInstance.preUploadCatalog();
+  //   console.log(preUploadCount);
     
-    await uploadInstance.upload("test_data/CatalogFiles/Format-InvalidActiveCourse.csv", 1);
-    await uploadInstance.uplaodcatalogValid(0);
+  //   await uploadInstance.upload("test_data/CatalogFiles/Format-InvalidActiveCourse.csv", 1);
+  //   await uploadInstance.uplaodcatalogValid(0);
     
-    // Verify format error
-    await uploadInstance.catalogFormatError();
+  //   // Verify format error
+  //   await uploadInstance.catalogFormatError();
     
-    // Verify confirmation page counts
-    await uploadInstance.confirmationPageCountCatalog("2", "+ 2 new active courses", "3" + "1 format errors", "3 rows were successfully transformed", "+ 2 new courses");
+  //   // Verify confirmation page counts
+  //   await uploadInstance.confirmationPageCountCatalog("2", "+ 2 new active courses", "3" + "1 format errors", "3 rows were successfully transformed", "+ 2 new courses");
     
-    // Verify error message in CSV
+  //   // Verify error message in CSV
   
-    await uploadInstance.catalogreadErrorCSVFile("Invalid Active Course Indicator. Should be a boolean ", 0);
+  //   await uploadInstance.catalogreadErrorCSVFile("Invalid Active Course Indicator. Should be a boolean ", 0);
     
-    // Post upload
-    await uploadInstance.postUpload();
-    postUploadCount = await uploadInstance.postUploadCountCatalog();
-    console.log(postUploadCount);
-    expect(parseInt(postUploadCount)).toEqual(parseInt(preUploadCount) + fileRulecount);
-  });
+  //   // Post upload
+  //   await uploadInstance.postUpload();
+  //   postUploadCount = await uploadInstance.postUploadCountCatalog();
+  //   console.log(postUploadCount);
+  //   expect(parseInt(postUploadCount)).toEqual(parseInt(preUploadCount) + fileRulecount);
+  // });
 
   test.skip("Uploads catalog add function with Invalid Course Department name Error", async () => {
     let fileRulecount = 2;

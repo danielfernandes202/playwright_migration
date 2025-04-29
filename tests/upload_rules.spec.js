@@ -24,21 +24,21 @@ test.beforeEach(async ({ browser }) => {
 });
 
 
-test.only('TC_01: Upload rule file with incorrect format(non CSV file)', async () => {
+  test('TC_01: Upload rule file with incorrect format(non CSV file)', async () => {
  // test.setTimeout(120000);
   await loginPageInstance.loginuser(creds.californiaoneadmin, creds.password);
   await uploadInstance.upload('test_data/uploadRules/182290_NonCSVFile.xlsx', 0);
   await expect(uploadInstance.page.getByText("Unsupported file. Only csv files are supported.")).toBeVisible();
 });
 
-test.only('TC_02: Upload rule file with spaces in the file name', async () => {
+  test('TC_02: Upload rule file with spaces in the file name', async () => {
  // test.setTimeout(120000);
   await loginPageInstance.loginuser(creds.rutgersadmin, creds.passwordnevadaqaenv);
   await uploadInstance.upload('test_data/uploadRules/182290_This File has Spaces.CSV', 0);
   await expect(uploadInstance.page.getByText("Please rename the file without spaces and try again.")).toBeVisible();
 });
 
-test.only('TC_03: Attempt to press on submit without checking the acknowledgement checkbox', async () => {
+  test('TC_03: Attempt to press on submit without checking the acknowledgement checkbox', async () => {
  // test.setTimeout(120000);
   await loginPageInstance.loginuser(creds.pimaadmin, creds.password);
   await uploadInstance.upload("test_data/uploadRules/182290_FileWithNoError4copy.csv", 0);
@@ -47,7 +47,7 @@ test.only('TC_03: Attempt to press on submit without checking the acknowledgemen
   await expect(uploadInstance.page.getByText('Submit')).toBeDisabled();
 });
 
-test.only('TC_04: Uploads a file and click cancel on the upload summary page', async () =>  {
+  test('TC_04: Uploads a file and click cancel on the upload summary page', async () =>  {
  // test.setTimeout(120000);
   await loginPageInstance.loginuser(creds.nebraskaadmin, creds.passwordnevadaqaenv);
   await uploadInstance.upload("test_data/uploadRules/182290_FileWithNoError4copy.csv", 0);
@@ -57,7 +57,7 @@ test.only('TC_04: Uploads a file and click cancel on the upload summary page', a
   await expect(uploadInstance.page).toHaveURL(/\/my-workspace\/inst-admin\/summary/);
 });
 
-test.only('TC_05: Uploads rules add function with no errors', async () => {
+  test('TC_05: Uploads rules add function with no errors', async () => {
   await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
  // test.setTimeout(120000);
 
@@ -93,7 +93,7 @@ test.only('TC_05: Uploads rules add function with no errors', async () => {
   expect(parseInt(postUploadCount)).toBe(parseInt(preUploadCount) + fileRulecount);
 });
 
-test.only('TC_06: Uploads rules add function with critical error "Missing required columns"', async () => {
+  test('TC_06: Uploads rules add function with critical error "Missing required columns"', async () => {
   await loginPageInstance.loginuser(creds.aanhaiiadmin, creds.password);
 
  // test.setTimeout(120000);
@@ -120,7 +120,7 @@ test.only('TC_06: Uploads rules add function with critical error "Missing requir
   expect(parseInt(postUploadCount)).toBe(parseInt(preUploadCount));
 });
 
-test.only('TC_07: Uploads rules add function with error "duplicate rule identifier"', async () => {
+  test('TC_07: Uploads rules add function with error "duplicate rule identifier"', async () => {
  // test.setTimeout(120000);
   await loginPageInstance.loginuser(creds.alvernoadmin, creds.password);
 
@@ -144,7 +144,7 @@ test.only('TC_07: Uploads rules add function with error "duplicate rule identifi
   expect(parseInt(postUploadCount)).toBe(parseInt(preUploadCount));
 });
 
-test.only('TC_08: Uploads rules update function with critical error "Invalid Institution ID"', async () => {
+  test('TC_08: Uploads rules update function with critical error "Invalid Institution ID"', async () => {
   await loginPageInstance.loginuser(creds.americanriveradmin, creds.password);
 
  // test.setTimeout(120000);
@@ -180,7 +180,7 @@ test.only('TC_08: Uploads rules update function with critical error "Invalid Ins
   expect(parseInt(postUploadCount)).toBe(parseInt(preUploadCount) + 8);
 });
 
-test.only('TC_09: Uploads rules Replace function with critical error "MissingCourseSubject"', async () => {
+  test('TC_09: Uploads rules Replace function with critical error "MissingCourseSubject"', async () => {
  // test.setTimeout(120000);
   await loginPageInstance.loginuser(creds.artadmin, creds.password);
 
