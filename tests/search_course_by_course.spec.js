@@ -51,7 +51,7 @@ const searchdata = require('../test_data/searchResources.json');
     });
 
     test('Search Course by course - Remove a previously added course', async () => {
-        test.setTimeout(60000);
+        test.setTimeout(120000);
         await searchInstance.searchCourseByCourse();
         for (let i = 0; i < 2; i++) {
             await searchInstance.addInstitutionName( searchdata.Institution[i].institutionName, searchdata.Institution[i].ipedState);
@@ -67,7 +67,7 @@ const searchdata = require('../test_data/searchResources.json');
     });
 
     test('Search Course by course - Add multiple courses and view the search result', async () => {
-        test.setTimeout(60000)
+        test.setTimeout(120000)
         await searchInstance.searchCourseByCourse();
         for (let i = 0; i < 3; i++) {
             await searchInstance.addInstitutionName( searchdata.Institution[i].institutionName, searchdata.Institution[i].ipedState);

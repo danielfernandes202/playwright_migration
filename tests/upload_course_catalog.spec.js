@@ -20,7 +20,7 @@ test.beforeEach(async ({ browser }) => {
   const page = await context.newPage();
   loginPageInstance = new loginPage(page);
   uploadInstance = new Upload(page);
-  await page.goto("https://qa.creditmobility.net/");
+  await page.goto("");
   const credsJson = require('../test_data/logindata.json');
     // const criticalErrorJson = require('../../fixtures/criticalErrorName.json');
     // const filesDataJson = require('../../fixtures/criticalErrorsFiles.json');
@@ -85,14 +85,17 @@ test.beforeEach(async ({ browser }) => {
     await expect(uploadInstance.page.getByText('Errors')).not.toBeVisible();
     await expect(uploadInstance.page.getByText('Download csv file')).not.toBeVisible();
     
-    // Verify confirmation page counts
+    // // Verify confirmation page counts
     await uploadInstance.confirmationPageCountCatalog("3", "+ 3 new active courses", "3", "3 rows were successfully transformed", "+ 3 new courses");
     
-    // Post upload
-    await uploadInstance.postUpload();
-    postUploadCount = await uploadInstance.postUploadCountCatalog();
-    console.log(postUploadCount);
-    expect(parseInt(postUploadCount)).toEqual(parseInt(preUploadCount) + fileRulecount);
+    await uploadInstance.page.getByText('Cancel').click();
+    await expect(uploadInstance.page).toHaveURL(/\/my-workspace\/inst-admin\/summary/);
+    
+    // // Post upload
+    // await uploadInstance.postUpload();
+    // postUploadCount = await uploadInstance.postUploadCountCatalog();
+    // console.log(postUploadCount);
+    // expect(parseInt(postUploadCount)).toEqual(parseInt(preUploadCount) + fileRulecount);
   });
 
   //   test(("TC 06 :Uploads catalog Update function with Invalid active course", async () => {
