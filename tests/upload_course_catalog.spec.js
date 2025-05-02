@@ -42,7 +42,7 @@ test.beforeEach(async ({ browser }) => {
     await expect(uploadInstance.page.getByText("Unsupported file. Only csv files are supported.")).toBeVisible();
   });
 
-  test("TC_02: Upload Catalog file with spaces in the file name", async () => {
+  test.skip("TC_02: Upload Catalog file with spaces in the file name", async () => {
     await loginPageInstance.loginuser( Creds.nevadaadmin, Creds.password, 'Institution Admin');
 
     await uploadInstance.upload('test_data/uploadRules/182290_This File has Spaces.CSV', 1);

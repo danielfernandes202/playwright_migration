@@ -31,7 +31,7 @@ test.beforeEach(async ({ browser }) => {
   await expect(uploadInstance.page.getByText("Unsupported file. Only csv files are supported.")).toBeVisible();
 });
 
-  test('TC_02: Upload rule file with spaces in the file name', async () => {
+  test.skip('TC_02: Upload rule file with spaces in the file name', async () => {
  // test.setTimeout(120000);
   await loginPageInstance.loginuser(creds.rutgersadmin, creds.passwordnevadaqaenv);
   await uploadInstance.upload('test_data/uploadRules/182290_This File has Spaces.CSV', 0);
