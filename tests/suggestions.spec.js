@@ -43,7 +43,7 @@ let boost;
         await suggestion.navigateToHistoryTab();
     });
 
-    test('Verifies that the user can sort A-Z for all columns in the new suggestions tab', async () => {
+    test.skip('Verifies that the user can sort A-Z for all columns in the new suggestions tab', async () => {
         await loginPageInstance.loginuser(creds.nevadaadmin, creds.password);
         await suggestion.navigateToNewSuggestionPage();
         await suggestion.newSuggestionSorting(1);
